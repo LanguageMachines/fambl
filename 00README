@@ -1,0 +1,220 @@
+--[Fambl]----------------------------------------------------------------
+
+  Family-Based Learning
+  version 2.3.4
+  June 2010
+
+Fambl is distributed under the GNU Public Licence (see the file COPYING).
+
+1997-2010 ILK / Tilburg University                   http://ilk.uvt.nl/
+Written by Antal van den Bosch                    Antal.vdnBosch@uvt.nl
+
+
+--[Startup]--------------------------------------------------------------
+
+1. Unzip and untar the Fambl package (will extract files in a new
+   directory called fambl.2.3):
+
+   > tar zxvf fambl.2.3.tar.gz
+
+2. Go to the new directory and build the Fambl executable:
+
+   > cd fambl.2.3
+   > make
+
+   Edit the Makefile if you want to change compiler (gcc by default) or
+   optimisation (-O3 by default). Type `make clean' to remove all 
+   make output.
+
+3. Run Fambl:
+
+   Check the available commandline options:
+
+   > Fambl -h
+
+   Consult the reference guide (doc/Fambl-refguide.pdf) that comes
+   with the software distribution, for descriptions of all
+   command-line options.
+
+
+--[Disclaimer]-----------------------------------------------------------
+
+Fambl comes WITHOUT ANY WARRANTY. Author nor distributor accept
+responsibility to anyone for the consequences of using it or for
+whether it serves any particular purpose or works at all.
+
+
+--[About Fambl, briefly]-------------------------------------------------
+
+Fambl is a carefully-abstracting memory-based learner. It learns a
+memory-based classifier that is a carefully compressed version of the
+original instance base. It operates on symbolic and numeric
+features. Its development was motivated by the 1999 ML article
+"Forgetting exceptions is harmful in language learning" by Daelemans,
+Van den Bosch, and Zavrel.
+
+The idea behind Fambl is to add a learning component to IB1 that
+pre-partitions the instance base into families of instances.  A family
+of instances is a set (>=1 elements) of nearest-neighbour instances
+that have the same class. Family boundaries are determined by
+nearest-neighbour instances of different classes, and may be
+furthermore based on other automatically-set restrictions on family
+size and within-family likeness.
+
+Instance families can be seen as class-homogeneous hypercubes, or
+dynamically expanded Parzen windows.
+
+More details can be found in the documentation that comes with the
+software distribution, as postscript documents: a reference guide, a
+short and a long paper on Fambl tested on mainly language learning
+tasks. For more documentation on the incorporated algorithms, metrics,
+and methods, and for basic reference, see
+
+
+  Aha, D. W., D. Kibler, and M. Albert (1991). Instance-based 
+    learning algorithms. Machine Learning, 6:37-66.
+
+  Cost, S. and S. Salzberg (1993). A weighted nearest neighbour 
+    algorithm for learning with symbolic features.
+    Machine Learning, 10:57-78.
+
+  Cover, T. M. and P. E. Hart (1967). Nearest neighbor pattern 
+    classification. Institute of Electrical and Electronics 
+    Engineers Transactions on Information Theory, 13:21-27.
+
+  Daelemans, W., A. van den Bosch, and A. Weijters (1997). IGTree: 
+    using trees for compression and classification in lazy learning 
+    algorithms. Artificial Intelligence Review, 11:407-423.
+
+  Daelemans, W., A. van den Bosch, and J. Zavrel (1997). A 
+    feature-relevance heuristic for indexing and compressing large 
+    case bases. In M. van Someren and G. Widmer, Poster Papers of 
+    the Ninth European Conference on Machine Learing, University of 
+    Economics, Prague, Czech Republic, pages 29-38.
+
+  Daelemans, W., A. van den Bosch, and J. Zavrel (1999).
+    Forgetting exceptions is harmful in language learning.
+    Machine Learning, 11:11-43.
+
+  Stanfill, C. and D. Waltz (1986). Toward memory-based reasoning.
+    Communications of the ACM, 29(12):1213-1228, December.
+
+  Van den Bosch, A. (1999). Careful abstraction from instance families 
+    in memory-based language learning. Journal of Experimental and 
+    Theoretical Artificial Intelligence (Special issue (W. Daelemans, 
+    ed.) on Memory-based Language Processing), 11:3, pp. 339-368
+
+  Van den Bosch, A. (1999). Instance-family abstraction in memory-based
+    language learning. In I. Bratko and S. Dzeroski (Eds.), Machine
+    Learning: Proceedings of the Sixteenth International Conference,
+    ICML'99, Bled, Slovenia, June 27-30, 1999, pp.39-48. 
+
+
+--[Version history]------------------------------------------------------
+
+ mnths yr   versions
+ --------------------  -------------------------------------------------
+ 09-12 97   0.01-0.13  draft versions
+ 01-06 98   0.14-0.25  basic development of Fambl modules
+ 07    98   0.26       first version with satisfactory basic abilities:
+                       family probing & extraction, GR weighting
+ 08    98   0.27-0.29  added all kinds of optimisations
+ 09    98   0.30-0.31  added MVD metric and IGTree/TRIBL-ish weight 
+                       adaptations; plus minor cleanups
+ 10    98   0.32-0.34  toward a memory-lean version: better handling 
+                       of MVDM (pre)computation; output more like TiMBL; 
+                       optional detection of informative feature 
+                       combinations
+ 11    98   0.35       added optional GR of individual feature values 
+                       and major speed optimisations with large data
+                       sets (slight slowdown with smaller ones)
+ 12    98   0.36       value-class cooccurrence counts placed up front;
+                       added computation of family weights; added
+                       alternative MVDM-based feature weighting
+ 01-02 99   0.37-0.38  added optional wildcard values; dropped the
+                       retainment of individual occurrences of merged
+                       values; minor memory & speed optimisations;
+                       added numeric features; optionalised
+                       hyperrectangles vs. centroids
+ 02-04 99   1.0beta    added optional chi-square feature weighting,
+                       including chi-square of feature combinations;
+                       minor bug fixes, cleanups and streamlining
+ 05    99   1.0        minor speed optimizations, updating documentation
+ 06    99   1.01       made probing optional, faster extraction,
+                       reshuffle of commandline options, updating
+                       documentation - first public domain release
+ 07    99   1.02       new method for value combination, replacing
+                       both value weighting and feature combination
+ 08-11 99   1.03       added log-likelihood feature (value) weighting,
+                       added cardinality ceiling parameter for
+                       feature selection
+ 12-01 99-00 1.04      debugged gain ratio feature weighting in atomic
+                       feature unpacking; minor speed and memory 
+                       streamlining
+ 02-07 00   1.05       reduction of options, streamlining the "atomic"
+                       components, debugged the default functioning
+ 07-08 00   1.06       changed family seed selection from random to
+                       class-prediction strength
+ 08    00   2.0        second public release
+ 01    03   2.1        debug and partial recode of CPS-based family 
+                       extraction; added distance weighting
+ 04    03   2.1.1      addition of z parameter val to output file name
+ 06    03   2.1.2      changed file declaration options
+ 06    03   2.1.3      added support for mvdm of binary unigram features
+ 06    03   2.1.4      file extensions more like TiMBL; solved case with 
+                       one class
+ 07    03   2.1.5      some optimization based on code profiling;
+                       debugged atomization
+ 09    03   2.1.6      added Jeffrey divergence as distance metric D, 
+                       two smoothing methods (Good-Turing and
+                       class-prior mixing) for MVDM and JD;
+                       possibility to write CPS file
+ 10    03   2.1.7      dropped CPS-based extraction with TiMBL
+ 11    03   2.1.8      debugged Jeffrey divergence
+ 11    03   2.1.9      more non-intrusive JD debugs
+ 11    03   2.1.10     debugged atomic rooster
+ 11    03   2.1.11     debugged smoothing, removed Lidstone smoothing,
+                       debugged k ranking (patch 1)
+ 07    04   2.1.12     deleted names file components; generalized 
+                       delimiter in reading data; abandoned smoothing; 
+                       prestored mvdm consumes far less memory; 
+                       dropped the suppression of low-frequent values
+ 07    04   2.2        re-implemented prestorage of MVDM of high-
+                       frequent values; streamlined small things for
+                       public release
+ 11    04   2.2.1      added X parameter allowing instances to be in
+                       multiple families
+ 11    04   2.3        major fix to family creation; K default to 1000;
+                       k default to 1
+ 11    04   2.3.1      added option to read in weight file
+ 03    08   2.3.3      changed license to GPL
+ 06    10   2.3.4      minor realloc fix
+ --------------------  -------------------------------------------------
+
+
+--[Problems]------------------------------------------------------------
+
+(1) Fambl writes temporary files in the current working directory. When 
+    Fambl is interrupted during writing, all temporary material is left 
+    sitting there. Be sure to delete any fambl*.tmp files you find 
+    after usage (041298)
+(2) some number overflow checks are not there or not idiot-proof yet.
+    extreme data may prove this. biggest data set to date tested 
+    successfully contained 2.5 million cases with 11 symbolic features. 
+    (080299)
+
+
+--[Acknowledgements]-----------------------------------------------------
+
+Antal wishes to thank Walter Daelemans, Ton Weijters, Jakub Zavrel,
+Iris Hendrickx, Jorn Veenstra, Sabine Buchholz, Erwin Marsi, Bertjan
+Busser, Ko van der Sloot, Eric Postma, Jaap van den Herik, David Aha,
+Pedro Domingos, Dietrich Wettschereck, and Fred Wan for providing
+comments and support.
+
+
+--[Notes]----------------------------------------------------------------
+
+Fambl is under continuous development. Feedback is very beneficial in
+this process. Please send bug reports and other noteworthy things to
+Antal.vdnBosch@uvt.nl.
